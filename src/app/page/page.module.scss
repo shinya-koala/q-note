@@ -1,0 +1,36 @@
+.memo-wrap {
+  display: flex;
+  $selectAreaWidth: 300px; // 変数宣言
+  .select-area {
+    position: relative;
+    width: 100%;
+    max-width: $selectAreaWidth;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    background-color: #DDD;
+    .debug-buttons {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      button {
+        width: 200px;
+        padding: 16px 0;
+        background-color: black;
+        color: #FFF;
+        &:not(:last-of-type) {
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }
+  .input-area {
+    width: calc(100% - $selectAreaWidth);
+    margin-left: auto;
+    .input-text {
+      width: 100%;
+      height: 100vh;
+    }
+  }
+}
