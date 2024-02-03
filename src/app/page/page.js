@@ -142,6 +142,8 @@ function Index() {
             aria-label="empty textarea"
             placeholder="Type something here..."
             style={{ width: "100%", height: "100vh" }}
+            onChange={(e) => setInputText(e.target.value)}
+            value={inputText}
           />
         </Box>
       </Box>
