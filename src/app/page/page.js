@@ -1,11 +1,12 @@
 "use client";
 import { styled } from "@mui/system";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.scss";
 import { v4 as uuid } from "uuid";
 import { db } from "../components/firebase";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
+import MarkdownIt from "markdown-it";
 
 import {
   Box,
@@ -37,8 +38,14 @@ const StyledDrawer = styled(Drawer)({
   position: "static",
 });
 
+const md = new MarkdownIt();
+
 function Index() {
   const [inputText, setInputText] = useState("");
+  const [openEditer, setOpenEditer] = useState(false);
+  const inputRef = useRef();
+
+  const htmlText = md.render(inputText); // マークダウン表示部分
 
   const GetDocFromKey = async (key) => {
     const docRef = doc(db, "memo_data", key);
@@ -138,13 +145,47 @@ function Index() {
             height: "calc(100vh - 56px)",
           }}
         >
-          <TextareaAutosize
-            aria-label="empty textarea"
-            placeholder="Type something here..."
-            style={{ width: "100%", height: "100vh" }}
-            onChange={(e) => setInputText(e.target.value)}
-            value={inputText}
-          />
+          <Box>
+            {/* // フォーカスが外れた時に入力と表示を入れ替える */}
+            <TextareaAutosize
+              aria-label="empty textarea"
+              placeholder="Type something here..."
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: openEditer ? "block" : "none",
+                overflowY: "scroll",
+              }}
+              onChange={(e) => setInputText(e.target.value)}
+              value={inputText}
+              ref={inputRef}
+              onBlur={() => {
+                setOpenEditer(false);
+              }}
+              open={openEditer}
+              // disabled={!openEditer}
+            />
+            {!openEditer && (
+              <Box
+                sx={{
+                  width: "auto",
+                  height: "100vh",
+                  padding: "0 24px",
+                  overflowY: "scroll",
+                  display: openEditer ? "none" : "block",
+                }}
+                dangerouslySetInnerHTML={{ __html: htmlText }}
+                onClick={() => {
+                  setOpenEditer(true);
+                  if (inputRef.current) {
+                    setTimeout(() => {
+                      inputRef.current.focus();
+                    }, "10");
+                  }
+                }}
+              />
+            )}
+          </Box>
         </Box>
       </Box>
     </>
