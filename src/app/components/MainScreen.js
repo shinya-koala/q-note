@@ -1,13 +1,11 @@
 "use client";
-import { styled } from "@mui/system";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import styles from "./page.module.scss";
-import { v4 as uuid } from "uuid";
-import { db } from "../components/firebase";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { styled } from "@mui/system";
 import MarkdownIt from "markdown-it";
-
+import { db } from "../components/firebase";
+import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import {
   Box,
   Button,
@@ -40,36 +38,41 @@ const StyledDrawer = styled(Drawer)({
 
 const md = new MarkdownIt();
 
-function Index() {
+function MainScreen({ id }) {
   const [inputText, setInputText] = useState("");
   const [openEditer, setOpenEditer] = useState(false);
   const inputRef = useRef();
-
-  const htmlText = md.render(inputText); // マークダウン表示部分
 
   const GetDocFromKey = async (key) => {
     const docRef = doc(db, "memo_data", key);
     const docSnap = await getDoc(docRef);
     const result = docSnap.data();
-    setInputText(result?.[TEXT_DATA_FIELD]);
+    return result?.[TEXT_DATA_FIELD];
   };
 
-  // ランダムなIDを生成
-  const RandomID = uuid();
-  console.log(RandomID);
-
   useEffect(() => {
-    GetDocFromKey("A7zRyxcU8ySgPLv9lWZw");
+    const getDoc = async () => {
+      const result = await GetDocFromKey(id);
+      if (result === undefined) {
+        await setDoc(doc(db, "memo_data", id), {
+          [TEXT_DATA_FIELD]: inputText,
+        });
+      } else {
+        setInputText(result);
+      }
+      console.log("result:", result);
+    };
+    getDoc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // アップデート保存
   const updateDB = useCallback(async () => {
-    const DocsData = doc(db, "memo_data", "A7zRyxcU8ySgPLv9lWZw");
+    const DocsData = doc(db, "memo_data", id);
     await updateDoc(DocsData, {
       [TEXT_DATA_FIELD]: inputText,
     });
-  }, [inputText]);
+  }, [inputText, id]);
 
   useEffect(() => {
     // ctrl + sで保存
@@ -86,6 +89,7 @@ function Index() {
     };
   }, [updateDB]);
 
+  const htmlText = md.render(inputText); // マークダウン表示部分
   return (
     <>
       <Box
@@ -94,7 +98,6 @@ function Index() {
           height: "100vh",
         }}
       >
-        {/* DrawerからBoxに変える作業をする */}
         <StyledDrawer
           variant="permanent"
           PaperProps={{
@@ -110,7 +113,11 @@ function Index() {
             <StyledListItem button>
               <ListItemText primary="Menu Item 2" />
             </StyledListItem>
-            {/* Add more menu items as needed */}
+            <StyledListItem>
+              <Link href="./pages/memoId/1">
+                <ListItemText secondary="Menu Item 2" />
+              </Link>
+            </StyledListItem>
             <Box
               sx={{
                 position: "absolute",
@@ -154,7 +161,7 @@ function Index() {
                 width: "100%",
                 height: "100vh",
                 display: openEditer ? "block" : "none",
-                overflowY: "scroll",
+                overflow: "visible scroll",
               }}
               onChange={(e) => setInputText(e.target.value)}
               value={inputText}
@@ -163,7 +170,6 @@ function Index() {
                 setOpenEditer(false);
               }}
               open={openEditer}
-              // disabled={!openEditer}
             />
             {!openEditer && (
               <Box
@@ -171,7 +177,7 @@ function Index() {
                   width: "auto",
                   height: "100vh",
                   padding: "0 24px",
-                  overflowY: "scroll",
+                  overflow: "visible scroll",
                   display: openEditer ? "none" : "block",
                 }}
                 dangerouslySetInnerHTML={{ __html: htmlText }}
@@ -192,4 +198,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default MainScreen;
