@@ -7,6 +7,7 @@ import MarkdownIt from "markdown-it";
 import { db } from "../components/firebase";
 import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import {
+  AppBar,
   Box,
   Button,
   Drawer,
@@ -14,26 +15,60 @@ import {
   ListItem,
   ListItemText,
   TextareaAutosize,
+  Toolbar,
+  Typography,
 } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Head from "next/head";
+import Image from "next/image";
 
 const TEXT_DATA_FIELD = "memoText";
 
 // MUI Styles
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-  "&:hover": {
-    backgroundColor: "orange",
-    color: "yellow",
+const StyledDrawer = styled(Drawer)({
+  position: "static",
+  maxWidth: "300px",
+  width: "100%",
+});
+
+const StyledList = styled(List)(({ theme }) => ({
+  width: "100%",
+  maxWidth: "300px",
+  paddingLeft: 24,
+  paddingRight: 24,
+  paddingTop: 40,
+  paddingBottom: 40,
+  "&:not(:last-of-type)": {
+    paddingBottom: "0",
   },
 }));
 
-const StyledList = styled(List)(({ theme }) => ({
-  height: "100%",
-  paddingLeft: 80,
-  paddingRight: 80,
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  cursor: "pointer",
+  borderRadius: "4px",
+  transition: "background-color .3s ease",
+  "&:hover": {
+    backgroundColor: "#F9DD3A",
+  },
 }));
 
-const StyledDrawer = styled(Drawer)({
-  position: "static",
+const StyledListItemSec = styled(ListItem)({
+  padding: 0,
+});
+
+const StyledListItemText = styled(ListItemText)({
+  margin: 0,
+});
+
+const StyledListItemTextSec = styled(ListItemText)({
+  fontSize: 12,
+});
+
+const StyledTypography = styled(Typography)({
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  maxWidth: "100%",
 });
 
 const md = new MarkdownIt();
@@ -50,6 +85,7 @@ function MainScreen({ id }) {
     return result?.[TEXT_DATA_FIELD];
   };
 
+  // **firebaseのルール設定により、5/26日以降は書き込み禁止になる。**
   useEffect(() => {
     const getDoc = async () => {
       const result = await GetDocFromKey(id);
@@ -60,7 +96,6 @@ function MainScreen({ id }) {
       } else {
         setInputText(result);
       }
-      console.log("result:", result);
     };
     getDoc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,71 +127,221 @@ function MainScreen({ id }) {
   const htmlText = md.render(inputText); // マークダウン表示部分
   return (
     <>
+      {/* Headerエリア */}
+      <AppBar
+        position="relative"
+        sx={{
+          zIndex: 9999,
+          backgroundColor: "#FFF",
+        }}
+      >
+        <Toolbar
+          sx={{
+            minHeight: "64px",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography variant="h1" component="div">
+            <Image
+              src="logo-bk.svg"
+              width="334"
+              height="125"
+              alt="Logo"
+              style={{
+                width: "10vw",
+                minWidth: "75px",
+                maxWidth: "140px",
+                height: "auto",
+              }}
+            />
+          </Typography>
+          <Box
+            className="user-area"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            <Link
+              href="#"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
+              {/* ユーザーボタン切り替え */}
+              <Button variant="text">ログイン</Button>
+              <Box className="arrow-icon" component="span">
+                <KeyboardArrowDownIcon />
+              </Box>
+            </Link>
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {/* リストエリア */}
       <Box
+        className="content-wrap"
         sx={{
           display: "flex",
-          height: "100vh",
+          width: "100%",
+          height: "calc(100vh - 64px)",
+          overflow: "hidden",
         }}
       >
         <StyledDrawer
           variant="permanent"
           PaperProps={{
             style: {
-              position: "static",
+              position: "relative",
+              overflow: "hidden auto",
+              display: "block",
+              backgroundColor: "#E8E8E8",
+              padding: "40px 0",
             },
           }}
         >
+          <Box
+            className="qr-code"
+            sx={{
+              width: "150px",
+              height: "150px",
+              margin: "0 auto",
+              backgroundColor: "#DDD",
+            }}
+          >
+            {/*QRコードが入ってくる*/}
+          </Box>
+          {/* メモリスト */}
           <StyledList>
-            <StyledListItem button>
-              <ListItemText primary="Menu Item 1" />
+            <StyledListItemSec>
+              <StyledListItemTextSec secondary="メモリスト" />
+            </StyledListItemSec>
+            <StyledListItem>
+              <StyledListItemText
+                primary={<StyledTypography>Menu Item 1</StyledTypography>}
+              />
             </StyledListItem>
-            <StyledListItem button>
-              <ListItemText primary="Menu Item 2" />
+            <StyledListItem>
+              <StyledListItemText
+                primary={
+                  <StyledTypography>
+                    Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu
+                    Item 2Menu Item 2Menu Item 2Menu Item 2
+                  </StyledTypography>
+                }
+              />
             </StyledListItem>
             <StyledListItem>
               <Link href="./pages/memoId/1">
-                <ListItemText secondary="Menu Item 2" />
+                <StyledListItemText primary="Menu Item 2" />
               </Link>
             </StyledListItem>
-            <Box
+          </StyledList>
+          {/* 履歴 */}
+          <StyledList>
+            <StyledListItemSec>
+              <StyledListItemTextSec secondary="履歴" />
+            </StyledListItemSec>
+            <StyledListItem>
+              <StyledListItemText
+                primary={<StyledTypography>Menu Item 1</StyledTypography>}
+              />
+            </StyledListItem>
+            <StyledListItem>
+              <StyledListItemText
+                primary={
+                  <StyledTypography>
+                    Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu
+                    Item 2Menu Item 2Menu Item 2Menu Item 2
+                  </StyledTypography>
+                }
+              />
+            </StyledListItem>
+            <StyledListItem>
+              <Link href="./pages/memoId/1">
+                <StyledListItemText primary="Menu Item 2" />
+              </Link>
+            </StyledListItem>
+          </StyledList>
+          {/* ブックマーク */}
+          <StyledList>
+            <StyledListItemSec>
+              <StyledListItemTextSec secondary="ブックマーク" />
+            </StyledListItemSec>
+            <StyledListItem>
+              <StyledListItemText
+                primary={<StyledTypography>Menu Item 1</StyledTypography>}
+              />
+            </StyledListItem>
+            <StyledListItem>
+              <StyledListItemText
+                primary={
+                  <StyledTypography>
+                    Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu
+                    Item 2Menu Item 2Menu Item 2Menu Item 2
+                  </StyledTypography>
+                }
+              />
+            </StyledListItem>
+            <StyledListItem>
+              <Link href="./pages/memoId/1">
+                <StyledListItemText primary="Menu Item 2" />
+              </Link>
+            </StyledListItem>
+          </StyledList>
+          　　　　　　　　　
+          {/* デバッグボタン */}
+          <Box
+            className="buttons-area"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+              /*maxWidth: "144px",*/
+              pr: 3,
+              pl: 3,
+              textAlign: "center",
+            }}
+          >
+            <Button
+              onClick={() => GetDocFromKey("A7zRyxcU8ySgPLv9lWZw")}
+              variant="contained"
               sx={{
-                position: "absolute",
-                bottom: "24px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                display: "flex",
-                flexDirection: "column",
-                pr: 3,
-                pl: 3,
-                textAlign: "center",
+                mb: 2,
+                width: "100%",
+                maxWidth: "104px",
               }}
             >
-              <Button
-                onClick={() => GetDocFromKey("A7zRyxcU8ySgPLv9lWZw")}
-                variant="contained"
-                sx={{
-                  mb: 2,
-                }}
-              >
-                読み込み
-              </Button>
-              <Button onClick={updateDB} variant="contained">
-                保存
-              </Button>
-            </Box>
-          </StyledList>
+              読み込み
+            </Button>
+            <Button
+              onClick={updateDB}
+              variant="contained"
+              sx={{
+                width: "100%",
+                maxWidth: "104px",
+              }}
+            >
+              保存
+            </Button>
+          </Box>
         </StyledDrawer>
+
+        {/* テキストエリア */}
         <Box
+          className="textArea-wrap"
           sx={{
-            width: "calc(100vw - 240px)",
-            height: "calc(100vh - 56px)",
+            width: "100%",
+            height: "100vh",
           }}
         >
-          <Box>
+          <Box className="textArea-inner">
             {/* // フォーカスが外れた時に入力と表示を入れ替える */}
             <TextareaAutosize
               aria-label="empty textarea"
-              placeholder="Type something here..."
+              placeholder="テキストを入力してください。"
               style={{
                 width: "100%",
                 height: "100vh",

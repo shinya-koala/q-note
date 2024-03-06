@@ -12,7 +12,7 @@ function Index() {
   useEffect(() => {
     const RandomID = uuid();
     router.push(RandomID);
-  }, []);
+  }, [router]);
 
   return (
     <>

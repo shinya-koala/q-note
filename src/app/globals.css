@@ -106,3 +106,12 @@ a {
     color-scheme: dark;
   }
 } */
+* {
+  color: #333;
+}
+
+a {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+}
