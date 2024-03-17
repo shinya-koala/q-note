@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Box, Button, TextareaAutosize } from "@mui/material";
 import MarkdownIt from "markdown-it";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const md = new MarkdownIt();
 
@@ -14,6 +15,7 @@ export const Textarea = ({
 }) => {
   const [openEditer, setOpenEditer] = useState(false);
   const inputRef = useRef();
+  const matchesMd = useMediaQuery("(max-width:768px)");
 
   const htmlText = md.render(inputText); // マークダウン表示部分
 
@@ -34,10 +36,8 @@ export const Textarea = ({
             left: 0, // 必要に応じて調整
             top: 0, // 必要に応じて調整
             zIndex: 1000, // 上に重ねる場合
+            marginTop: matchesMd ? "36px" : "auto",
           }),
-          "@media (maxWidth: 768px)": {
-            marginTop: "36px",
-          },
         }}
       >
         {/* // フォーカスが外れた時に入力と表示を入れ替える */}
@@ -84,14 +84,11 @@ export const Textarea = ({
         className="close-menu-button"
         onClick={() => setShowSidebar(!showSidebar)}
         sx={{
-          display: "none",
+          display: matchesMd ? "block" : "none",
           position: "absolute",
           left: 0,
           ransition: "transform 0.5s ease-in-out",
           transform: "translateX(0)",
-          "@media (maxWidth: 768px)": {
-            display: "block", // 768px以下で表示
-          },
         }}
       >
         <Button variant="contained">

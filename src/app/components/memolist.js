@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useCallback, useEffect, useState } from "react";
 import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../components/firebase";
@@ -15,6 +13,8 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Qrcode } from "./qrcode";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const TEXT_DATA_FIELD = "memoText";
 
@@ -66,8 +66,15 @@ const StyledTypography = styled(Typography)({
   maxWidth: "100%",
 });
 
-export const MemoList = ({ id, inputText, setShowTextarea, setInputText }) => {
-  const [showSidebar, setShowSidebar] = useState(true); // Drawerのスライド
+export const MemoList = ({
+  id,
+  inputText,
+  setShowTextarea,
+  setInputText,
+  showSidebar,
+  setShowSidebar,
+}) => {
+  const matchesMd = useMediaQuery("(max-width: 768px)");
 
   const getDocFromKey = useCallback(async (key) => {
     const docRef = doc(db, "memo_data", key);
@@ -127,18 +134,16 @@ export const MemoList = ({ id, inputText, setShowTextarea, setInputText }) => {
           open={showSidebar}
           PaperProps={{
             style: {
-              position: "relative",
+              position: matchesMd ? "fixed" : "relative",
               overflow: "hidden auto",
-              height: "auto",
+              top: matchesMd ? "64px" : "auto",
+              height: matchesMd ? "100%" : "auto",
               backgroundColor: "#E8E8E8",
               padding: "40px 0",
-              "@media (maxWidth: 768px)": {
-                position: "fixed",
-                top: "64px",
-              },
             },
           }}
         >
+          {/* QRコード */}
           <Box
             className="qr-code"
             sx={{
@@ -148,7 +153,7 @@ export const MemoList = ({ id, inputText, setShowTextarea, setInputText }) => {
               backgroundColor: "#DDD",
             }}
           >
-            {/*QRコードが入ってくる*/}
+            <Qrcode id={id} />
           </Box>
           {/* メモリスト */}
           <StyledList>
@@ -272,14 +277,11 @@ export const MemoList = ({ id, inputText, setShowTextarea, setInputText }) => {
           <Box
             className="slider-button"
             sx={{
-              display: "none",
+              display: matchesMd ? "block" : "none",
               position: "absolute",
               top: 0,
               left: 0,
               zIndex: 1,
-              "@media (maxWidth: 768px)": {
-                display: "block", // 768px以下で表示
-              },
             }}
           >
             <Button

@@ -40,6 +40,8 @@ function MainScreen({ id }) {
         <MemoList
           id={id}
           inputText={inputText}
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar}
           setShowTextarea={setShowTextarea}
           setInputText={setInputText}
         />
