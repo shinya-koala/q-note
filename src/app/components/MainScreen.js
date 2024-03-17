@@ -30,6 +30,7 @@ const TEXT_DATA_FIELD = "memoText";
 // MUI Styles
 const StyledDrawer = styled(Drawer)({
   position: "static",
+  overflow: "auto",
   maxWidth: "300px",
   width: "100%",
 });
@@ -132,6 +133,15 @@ function MainScreen({ id }) {
   const htmlText = md.render(inputText); // マークダウン表示部分
   return (
     <>
+      <Head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="title" content="Q-note" />
+        <meta name="description" content="This is my portfolio page." />
+        <meta name="keywords" content="Next.js, JavaScript, React, QRcode" />
+        <link rel="canonical" href="https://example.com/q-note" />
+        {/* <link rel="icon" href="https://example.com/favicon.ico" /> */}
+      </Head>
       {/* Headerエリア */}
       <AppBar
         position="relative"
@@ -204,10 +214,10 @@ function MainScreen({ id }) {
               style: {
                 position: "relative",
                 overflow: "hidden auto",
+                height: "auto",
                 backgroundColor: "#E8E8E8",
                 padding: "40px 0",
                 "@media (max-width: 768px)": {
-                  display: showSidebar ? "block" : "",
                   position: "fixed",
                   top: "64px",
                 },
