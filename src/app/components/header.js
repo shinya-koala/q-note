@@ -35,7 +35,8 @@ export const Header = () => {
               }}
             />
           </Typography>
-          <Box
+          {/* ログインボタン */}
+          {/* <Box
             className="user-area"
             sx={{
               textAlign: "center",
@@ -49,13 +50,14 @@ export const Header = () => {
                 textDecoration: "none",
               }}
             >
-              {/* ユーザーボタン切り替え */}
+              ユーザーボタン切り替え
               <Button variant="text">ログイン</Button>
               <Box className="arrow-icon" component="span">
                 <KeyboardArrowDownIcon />
               </Box>
             </Link>
-          </Box>
+          </Box> 
+          */}
         </Toolbar>
       </AppBar>
     </>

@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import Head from "next/head";
-import { Header } from "./header";
-import { Textarea } from "./textarea";
-import { MemoList } from "./memolist";
+import { Header } from "../components/header";
+import { Textarea } from "../components/textarea";
+import { MemoList } from "../components/memolist";
 
 function MainScreen({ id }) {
   const [inputText, setInputText] = useState("");

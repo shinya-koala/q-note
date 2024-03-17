@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, usePathname, useParams } from "next/navigation";
-import MainScreen from "../components/MainScreen";
+import MainScreen from "../screen/main";
 
 const QNoteScreen = () => {
   // URLのパラメーターを取得
