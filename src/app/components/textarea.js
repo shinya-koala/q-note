@@ -46,7 +46,7 @@ export const Textarea = ({
           placeholder="テキストを入力してください。"
           style={{
             width: "100%",
-            height: "100vh",
+            height: "calc(100vh - 64px)",
             display: openEditer ? "block" : "none",
             overflow: "visible scroll",
           }}
@@ -62,7 +62,7 @@ export const Textarea = ({
           <Box
             sx={{
               width: "auto",
-              height: "100vh",
+              height: "calc(100vh - 64px)",
               padding: "0 24px",
               overflow: "visible scroll",
               display: openEditer ? "none" : "block",

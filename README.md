@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 概要
 
-## Getting Started
+このアプリはQRコードでメモを共有するアプリです。
+URLにランダムな文字列が生成され、相手とQRコードを渡すことでメモを共有できます。
 
-First, run the development server:
+## デザインカンプ
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+今回は「adobeXD」で簡易的なデザインカンプを作りました。以下のURLにて未実装部分のデザインも閲覧できます。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+https://xd.adobe.com/view/b29f1e19-203c-43d9-aa8d-6d26a9982933-e7cc/?fullscreen
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 企画書
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+今回はドキュメントツール「Notion」を使用しました。以下のURLから閲覧ください。
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+https://puddle-splash-c80.notion.site/Q-Note-ef6952c177af4a4c8972adb5026ac623?pvs=4
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Vrecelにてアプリを公開中です。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+https://q-note-zeta.vercel.app/
+
+## マークアップ記法
+
+以下のURLにて実際に閲覧可能です。
+https://www.notion.so/0a44aa18f9d74e838f56e8758f6a32fb
