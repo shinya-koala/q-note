@@ -3,10 +3,13 @@ import { useQRCode } from "next-qrcode";
 
 export const Qrcode = ({ id }) => {
   const { Canvas } = useQRCode();
+  const url = new URL(window.location.href); // 現在のドメインを取得
+  url.searchParams.delete("referrer"); // リファラー情報削除
+
   return (
     <Canvas
       // 本番URLに切り替える
-      text={`http://localhost:3000/${id}`}
+      text={`${url.origin}/${id}`}
       options={{
         errorCorrectionLevel: "M",
         type: "image/png",
