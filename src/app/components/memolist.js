@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../components/firebase";
-import Link from "next/link";
 import { styled } from "@mui/system";
 import {
   Box,
@@ -12,9 +11,9 @@ import {
   ListItemText,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Qrcode } from "./qrCode";
+import { Qrcode } from "./qrcode";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { HistoryList } from "./historyList";
+import { HistoryList } from "./historylist";
 
 const TEXT_DATA_FIELD = "memoText";
 
