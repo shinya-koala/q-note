@@ -10,11 +10,11 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Qrcode } from "./qrcode";
+import { Qrcode } from "./qrCode";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { HistoryList } from "./historyList";
 
 const TEXT_DATA_FIELD = "memoText";
 
@@ -38,32 +38,12 @@ const StyledList = styled(List)(({ theme }) => ({
   },
 }));
 
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-  cursor: "pointer",
-  borderRadius: "4px",
-  transition: "background-color .3s ease",
-  "&:hover": {
-    backgroundColor: "#F9DD3A",
-  },
-}));
-
 const StyledListItemSec = styled(ListItem)({
   padding: 0,
 });
 
-const StyledListItemText = styled(ListItemText)({
-  margin: 0,
-});
-
 const StyledListItemTextSec = styled(ListItemText)({
   fontSize: 12,
-});
-
-const StyledTypography = styled(Typography)({
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-  overflow: "hidden",
-  maxWidth: "100%",
 });
 
 export const MemoList = ({
@@ -137,7 +117,7 @@ export const MemoList = ({
               position: matchesMd ? "fixed" : "relative",
               overflow: "hidden auto",
               top: matchesMd ? "64px" : "auto",
-              height: matchesMd ? "100%" : "auto",
+              height: "100%",
               backgroundColor: "#E8E8E8",
               padding: "40px 0",
             },
@@ -156,7 +136,7 @@ export const MemoList = ({
             <Qrcode id={id} />
           </Box>
           {/* メモリスト */}
-          <StyledList>
+          {/* <StyledList>
             <StyledListItemSec>
               <StyledListItemTextSec secondary="メモリスト" />
             </StyledListItemSec>
@@ -180,39 +160,16 @@ export const MemoList = ({
                 <StyledListItemText primary="Menu Item 2" />
               </Link>
             </StyledListItem>
-          </StyledList>
+          </StyledList> */}
           {/* 履歴 */}
           <StyledList>
             <StyledListItemSec>
               <StyledListItemTextSec secondary="履歴" />
             </StyledListItemSec>
-            <StyledListItem>
-              <Link href="./40fa4056-d2da-4c25-9592-72b9cd139be3">
-                <StyledListItemText
-                  primary={<StyledTypography>Menu Item 1</StyledTypography>}
-                />
-              </Link>
-            </StyledListItem>
-            <StyledListItem>
-              <StyledListItemText
-                primary={
-                  <Link href="./A7zRyxcU8ySgPLv9lWZw">
-                    <StyledTypography>
-                      Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item
-                      2Menu Item 2Menu Item 2Menu Item 2Menu Item 2
-                    </StyledTypography>
-                  </Link>
-                }
-              />
-            </StyledListItem>
-            <StyledListItem>
-              <Link href="./pages/memoId/1">
-                <StyledListItemText primary="Menu Item 2" />
-              </Link>
-            </StyledListItem>
+            <HistoryList id={id} />
           </StyledList>
           {/* ブックマーク */}
-          <StyledList>
+          {/* <StyledList>
             <StyledListItemSec>
               <StyledListItemTextSec secondary="ブックマーク" />
             </StyledListItemSec>
@@ -236,8 +193,8 @@ export const MemoList = ({
                 <StyledListItemText primary="Menu Item 2" />
               </Link>
             </StyledListItem>
-          </StyledList>
-          　　　　　　　　　
+          </StyledList> */}
+
           {/* デバッグボタン */}
           <Box
             className="buttons-area"
