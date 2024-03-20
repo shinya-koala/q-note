@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { styled } from "@mui/system";
 import { ListItem } from "@mui/material";
-import { HistoryListItem } from "./historylistitem";
+import { HistoryListItem } from "./historyListItem";
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({}));
 
