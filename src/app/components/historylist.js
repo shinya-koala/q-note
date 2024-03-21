@@ -32,9 +32,12 @@ export const HistoryList = ({ id }) => {
       setHistoryData(_historyData);
     }
 
-    const url = new URL(window.location.href); // 現在のドメインを取得
-    url.searchParams.delete("referrer"); // リファラー情報削除
-    setDomain(url.origin);
+    if (window && window.location) {
+      const url = new URL(window.location.href); // 現在のドメインを取得
+      url.searchParams.delete("referrer"); // リファラー情報削除
+      setDomain(url.origin);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // useEffectを使用してクライアントサイドでのみ実行
 

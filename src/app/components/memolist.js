@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../components/firebase";
 import { styled } from "@mui/system";
@@ -14,6 +14,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Qrcode } from "./qrcode";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HistoryList } from "./historylist";
+import { Alert } from "./Alert";
 
 const TEXT_DATA_FIELD = "memoText";
 
@@ -23,6 +24,7 @@ const StyledDrawer = styled(Drawer)({
   overflow: "auto",
   maxWidth: "300px",
   width: "100%",
+  height: "100%",
 });
 
 const StyledList = styled(List)(({ theme }) => ({
@@ -48,12 +50,21 @@ const StyledListItemTextSec = styled(ListItemText)({
 export const MemoList = ({
   id,
   inputText,
-  setShowTextarea,
   setInputText,
   showSidebar,
   setShowSidebar,
 }) => {
+  const [isShowAlert, setIsShowAlert] = useState(false);
   const matchesMd = useMediaQuery("(max-width: 768px)");
+
+  const handleAlert = () => {
+    // アラートを表示
+    setIsShowAlert(true);
+    // 3秒後にアラートを非表示
+    setTimeout(() => {
+      setIsShowAlert(false);
+    }, 3000);
+  };
 
   const getDocFromKey = useCallback(async (key) => {
     const docRef = doc(db, "memo_data", key);
@@ -105,7 +116,21 @@ export const MemoList = ({
   }, [updateDB]);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
+      {/* アラートエリア */}
+      {isShowAlert && (
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: "99999",
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(51, 51, 51, 0.7)",
+          }}
+        >
+          <Alert />
+        </Box>
+      )}
       {/* リストエリア */}
       {showSidebar && (
         <StyledDrawer
@@ -220,14 +245,17 @@ export const MemoList = ({
               読み込み
             </Button>
             <Button
-              onClick={updateDB}
+              onClick={() => {
+                updateDB();
+                handleAlert();
+              }}
               variant="contained"
               sx={{
                 width: "100%",
                 maxWidth: "104px",
               }}
             >
-              保存
+              公開
             </Button>
           </Box>
           <Box
@@ -244,7 +272,6 @@ export const MemoList = ({
               variant="contained"
               onClick={() => {
                 setShowSidebar(!showSidebar);
-                setShowTextarea(true); // Drawerを閉じる時にテキストエリア表示フラグを立てる
               }}
             >
               <ArrowBackIosNewIcon />
@@ -252,6 +279,6 @@ export const MemoList = ({
           </Box>
         </StyledDrawer>
       )}
-    </>
+    </div>
   );
 };
