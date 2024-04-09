@@ -12,25 +12,20 @@ export const HistoryList = ({ id }) => {
   const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
-    // データがなければ新規作成
-    if (!localStorage.hasOwnProperty(localStorageKey)) {
-      localStorage.setItem(
-        localStorageKey,
-        JSON.stringify([{ id: id, title: id }])
-      );
-    }
-
     // ローカルストレージからデータを取得
     let _historyData = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 
-    if (_historyData.length !== 0) {
-      // 既存のデータを削除
-      _historyData = _historyData.filter((dataArray) => dataArray.id !== id);
-      // 新規追加
-      _historyData.push({ id: id, title: id });
-      // 更新
-      setHistoryData(_historyData);
-    }
+    // 既存のデータを削除(先頭に移動)
+    _historyData = _historyData.filter((dataArray) => dataArray.id !== id);
+
+    // 新規追加
+    _historyData.push({ id: id, title: id });
+
+    // LocalStorage 更新
+    localStorage.setItem(localStorageKey, JSON.stringify(_historyData));
+
+    // 描画更新
+    setHistoryData(_historyData);
 
     if (window && window.location) {
       const url = new URL(window.location.href); // 現在のドメインを取得
@@ -41,15 +36,12 @@ export const HistoryList = ({ id }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // useEffectを使用してクライアントサイドでのみ実行
 
-  // ローカルストレージ更新
-  useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(historyData));
-  }, [historyData]);
-
+  // 削除処理
   const onAcceptDelete = useCallback(
     (id) => {
-      // 削除処理
-      setHistoryData(historyData.filter((item) => item.id !== id));
+      const updatedHistoryData = historyData.filter((item) => item.id !== id);
+      localStorage.setItem(localStorageKey, JSON.stringify(updatedHistoryData));
+      setHistoryData(updatedHistoryData);
     },
     [historyData]
   );

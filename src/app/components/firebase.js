@@ -3,6 +3,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
 const firebaseApp = firebase.initializeApp({
+  // TODO: Use env.
   apiKey: "AIzaSyC4VrOV2ZtJrjY5TWEqDO4AXKRI-HalrZE",
   authDomain: "q-note-1b9ef.firebaseapp.com",
   projectId: "q-note-1b9ef",

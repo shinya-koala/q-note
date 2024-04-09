@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getDoc, setDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../components/firebase";
 import { styled } from "@mui/system";
@@ -14,7 +15,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Qrcode } from "./qrcode";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { HistoryList } from "./historylist";
-import { Alert } from "./Alert";
+import { Alert } from "./alert";
 
 const TEXT_DATA_FIELD = "memoText";
 
@@ -56,6 +57,7 @@ export const MemoList = ({
 }) => {
   const [isShowAlert, setIsShowAlert] = useState(false);
   const matchesMd = useMediaQuery("(max-width: 768px)");
+  const router = useRouter();
 
   const handleAlert = () => {
     // アラートを表示
@@ -116,7 +118,7 @@ export const MemoList = ({
   }, [updateDB]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", maxWidth: "300px", width: "100%" }}>
       {/* アラートエリア */}
       {isShowAlert && (
         <Box
@@ -160,31 +162,6 @@ export const MemoList = ({
             <Qrcode id={id} />
           </Box>
           {/* メモリスト */}
-          {/* <StyledList>
-            <StyledListItemSec>
-              <StyledListItemTextSec secondary="メモリスト" />
-            </StyledListItemSec>
-            <StyledListItem>
-              <StyledListItemText
-                primary={<StyledTypography>Menu Item 1</StyledTypography>}
-              />
-            </StyledListItem>
-            <StyledListItem>
-              <StyledListItemText
-                primary={
-                  <StyledTypography>
-                    Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu
-                    Item 2Menu Item 2Menu Item 2Menu Item 2
-                  </StyledTypography>
-                }
-              />
-            </StyledListItem>
-            <StyledListItem>
-              <Link href="./pages/memoId/1">
-                <StyledListItemText primary="Menu Item 2" />
-              </Link>
-            </StyledListItem>
-          </StyledList> */}
           {/* 履歴 */}
           <StyledList>
             <StyledListItemSec>
@@ -192,34 +169,8 @@ export const MemoList = ({
             </StyledListItemSec>
             <HistoryList id={id} />
           </StyledList>
-          {/* ブックマーク */}
-          {/* <StyledList>
-            <StyledListItemSec>
-              <StyledListItemTextSec secondary="ブックマーク" />
-            </StyledListItemSec>
-            <StyledListItem>
-              <StyledListItemText
-                primary={<StyledTypography>Menu Item 1</StyledTypography>}
-              />
-            </StyledListItem>
-            <StyledListItem>
-              <StyledListItemText
-                primary={
-                  <StyledTypography>
-                    Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu Item 2Menu
-                    Item 2Menu Item 2Menu Item 2Menu Item 2
-                  </StyledTypography>
-                }
-              />
-            </StyledListItem>
-            <StyledListItem>
-              <Link href="./pages/memoId/1">
-                <StyledListItemText primary="Menu Item 2" />
-              </Link>
-            </StyledListItem>
-          </StyledList> */}
 
-          {/* デバッグボタン */}
+          {/* ボタン */}
           <Box
             className="buttons-area"
             sx={{
@@ -232,6 +183,17 @@ export const MemoList = ({
               textAlign: "center",
             }}
           >
+            <Button
+              onClick={() => router.push("/")}
+              variant="contained"
+              sx={{
+                mb: 2,
+                width: "100%",
+                maxWidth: "104px",
+              }}
+            >
+              新規作成
+            </Button>
             <Button
               // onClick={() => GetDocFromKey("A7zRyxcU8ySgPLv9lWZw")}
               onClick={_getDoc}
